@@ -70,3 +70,4 @@ install:
 	go get -u github.com/pascaldekloe/colfer/cmd/colf
 	go get -u github.com/calmh/xdr
 	go get -u github.com/niubaoshu/gotiny
+	go get -u github.com/fxamacker/cbor/v2

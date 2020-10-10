@@ -15,6 +15,7 @@ import (
 	"github.com/Sereal/Sereal/Go/sereal"
 	"github.com/alecthomas/binary"
 	"github.com/davecgh/go-xdr/xdr"
+	cbor "github.com/fxamacker/cbor/v2"
 	capn "github.com/glycerine/go-capnproto"
 	"github.com/gogo/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
@@ -475,6 +476,14 @@ func BenchmarkUgorjiCodecBincUnmarshal(b *testing.B) {
 	h := &codec.BincHandle{}
 	h.AsSymbols = 0
 	benchUnmarshal(b, &UgorjiCodecSerializer{h})
+}
+
+func BenchmarkUgorjiCodecCborMarshal(b *testing.B) {
+	benchMarshal(b, &UgorjiCodecSerializer{&codec.CborHandle{}})
+}
+
+func BenchmarkUgorjiCodecCborUnmarshal(b *testing.B) {
+	benchUnmarshal(b, &UgorjiCodecSerializer{&codec.CborHandle{}})
 }
 
 // github.com/Sereal/Sereal/Go/sereal
@@ -1410,4 +1419,24 @@ func BenchmarkSSZNoTimeNoStringNoFloatAUnmarshal(b *testing.B) {
 			}
 		}
 	}
+}
+
+// github.com/fxamacker/cbor/v2
+
+type FxamackerCborV2Serializer struct{}
+
+func (j FxamackerCborV2Serializer) Marshal(o interface{}) ([]byte, error) {
+	return cbor.Marshal(o)
+}
+
+func (j FxamackerCborV2Serializer) Unmarshal(d []byte, o interface{}) error {
+	return cbor.Unmarshal(d, o)
+}
+
+func BenchmarkFxamackerCborV2Marshal(b *testing.B) {
+	benchMarshal(b, FxamackerCborV2Serializer{})
+}
+
+func BenchmarkFxamackerCborV2Unmarshal(b *testing.B) {
+	benchUnmarshal(b, FxamackerCborV2Serializer{})
 }
