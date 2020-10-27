@@ -17,7 +17,8 @@ import (
 	"github.com/davecgh/go-xdr/xdr"
 	cbor "github.com/fxamacker/cbor/v2"
 	capn "github.com/glycerine/go-capnproto"
-	"github.com/gogo/protobuf/proto"
+	gogoproto "github.com/gogo/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
 	"github.com/hprose/hprose-go"
 	hprose2 "github.com/hprose/hprose-golang/io"
@@ -547,11 +548,7 @@ func (s *FlatBufferSerializer) Marshal(o interface{}) ([]byte, error) {
 	FlatBufferAAddPhone(builder, phone)
 	FlatBufferAAddBirthDay(builder, a.BirthDay.UnixNano())
 	FlatBufferAAddSiblings(builder, int32(a.Siblings))
-	var spouse byte
-	if a.Spouse {
-		spouse = byte(1)
-	}
-	FlatBufferAAddSpouse(builder, spouse)
+	FlatBufferAAddSpouse(builder, a.Spouse)
 	FlatBufferAAddMoney(builder, a.Money)
 	builder.Finish(FlatBufferAEnd(builder))
 	return builder.Bytes[builder.Head():], nil
@@ -565,7 +562,7 @@ func (s *FlatBufferSerializer) Unmarshal(d []byte, i interface{}) error {
 	a.BirthDay = time.Unix(0, o.BirthDay())
 	a.Phone = string(o.Phone())
 	a.Siblings = int(o.Siblings())
-	a.Spouse = o.Spouse() == byte(1)
+	a.Spouse = o.Spouse() == true
 	a.Money = o.Money()
 	return nil
 }
@@ -819,12 +816,12 @@ func generateProto() []*ProtoBufA {
 	a := make([]*ProtoBufA, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		a = append(a, &ProtoBufA{
-			Name:     proto.String(randString(16)),
-			BirthDay: proto.Int64(time.Now().UnixNano()),
-			Phone:    proto.String(randString(10)),
-			Siblings: proto.Int32(rand.Int31n(5)),
-			Spouse:   proto.Bool(rand.Intn(2) == 1),
-			Money:    proto.Float64(rand.Float64()),
+			Name:     randString(16),
+			BirthDay: time.Now().UnixNano(),
+			Phone:    randString(10),
+			Siblings: rand.Int31n(5),
+			Spouse:   rand.Intn(2) == 1,
+			Money:    rand.Float64(),
 		})
 	}
 	return a
@@ -872,7 +869,7 @@ func BenchmarkGoprotobufUnmarshal(b *testing.B) {
 		// Validate unmarshalled data.
 		if validate != "" {
 			i := data[n]
-			correct := *o.Name == *i.Name && *o.Phone == *i.Phone && *o.Siblings == *i.Siblings && *o.Spouse == *i.Spouse && *o.Money == *i.Money && *o.BirthDay == *i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+			correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
 			if !correct {
 				b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
 			}
@@ -903,7 +900,7 @@ func BenchmarkGogoprotobufMarshal(b *testing.B) {
 	b.ResetTimer()
 	var serialSize int
 	for i := 0; i < b.N; i++ {
-		bytes, err := proto.Marshal(data[rand.Intn(len(data))])
+		bytes, err := gogoproto.Marshal(data[rand.Intn(len(data))])
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -919,7 +916,7 @@ func BenchmarkGogoprotobufUnmarshal(b *testing.B) {
 	var serialSize int
 	for i, d := range data {
 		var err error
-		ser[i], err = proto.Marshal(d)
+		ser[i], err = gogoproto.Marshal(d)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -932,7 +929,7 @@ func BenchmarkGogoprotobufUnmarshal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		n := rand.Intn(len(ser))
 		o := &GogoProtoBufA{}
-		err := proto.Unmarshal(ser[n], o)
+		err := gogoproto.Unmarshal(ser[n], o)
 		if err != nil {
 			b.Fatalf("goprotobuf failed to unmarshal: %s (%s)", err, ser[n])
 		}
