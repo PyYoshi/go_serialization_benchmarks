@@ -7,10 +7,10 @@ import (
 	encoding_binary "encoding/binary"
 	fmt "fmt"
 	_ "github.com/gogo/protobuf/gogoproto"
-	github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -22,15 +22,15 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type GogoProtoBufA struct {
-	Name     string  `protobuf:"bytes,1,req,name=name" json:"name"`
-	BirthDay int64   `protobuf:"varint,2,req,name=birthDay" json:"birthDay"`
-	Phone    string  `protobuf:"bytes,3,req,name=phone" json:"phone"`
-	Siblings int32   `protobuf:"varint,4,req,name=siblings" json:"siblings"`
-	Spouse   bool    `protobuf:"varint,5,req,name=spouse" json:"spouse"`
-	Money    float64 `protobuf:"fixed64,6,req,name=money" json:"money"`
+	Name     string  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	BirthDay int64   `protobuf:"varint,2,opt,name=birthDay,proto3" json:"birthDay,omitempty"`
+	Phone    string  `protobuf:"bytes,3,opt,name=phone,proto3" json:"phone,omitempty"`
+	Siblings int32   `protobuf:"varint,4,opt,name=siblings,proto3" json:"siblings,omitempty"`
+	Spouse   bool    `protobuf:"varint,5,opt,name=spouse,proto3" json:"spouse,omitempty"`
+	Money    float64 `protobuf:"fixed64,6,opt,name=money,proto3" json:"money,omitempty"`
 }
 
 func (m *GogoProtoBufA) Reset()         { *m = GogoProtoBufA{} }
@@ -47,7 +47,7 @@ func (m *GogoProtoBufA) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_GogoProtoBufA.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -115,28 +115,29 @@ func init() {
 func init() { proto.RegisterFile("structdef-gogo.proto", fileDescriptor_445e4de7f4e06aee) }
 
 var fileDescriptor_445e4de7f4e06aee = []byte{
-	// 240 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x8c, 0x31, 0x4e, 0xc3, 0x30,
-	0x18, 0x85, 0x63, 0x37, 0xa9, 0x8a, 0x25, 0x16, 0x8b, 0xc1, 0xaa, 0x90, 0xb1, 0x98, 0xbc, 0xb4,
-	0x39, 0x03, 0x11, 0x12, 0x2b, 0xe2, 0x06, 0x75, 0x70, 0x9c, 0x48, 0xc4, 0x7f, 0x14, 0xdb, 0x43,
-	0x6f, 0xc1, 0x9d, 0x58, 0x3a, 0x76, 0x64, 0x42, 0x28, 0xb9, 0x08, 0x8a, 0x49, 0xa0, 0xe3, 0xfb,
-	0xde, 0xfb, 0x1e, 0xb9, 0x71, 0xbe, 0x0f, 0xa5, 0x7f, 0xd5, 0xd5, 0xce, 0x80, 0x81, 0x7d, 0xd7,
-	0x83, 0x07, 0x4a, 0x0c, 0x38, 0xdd, 0x2b, 0x6d, 0xcb, 0x7a, 0xbb, 0x33, 0x8d, 0xaf, 0x83, 0xda,
-	0x97, 0xd0, 0xe6, 0xd3, 0x24, 0x8f, 0x13, 0x15, 0xaa, 0x98, 0x62, 0xc8, 0xff, 0xd5, 0xfb, 0x0f,
-	0x44, 0xae, 0x9f, 0xc0, 0xc0, 0xf3, 0x94, 0x8a, 0x50, 0x3d, 0x50, 0x46, 0x52, 0x7b, 0x68, 0x35,
-	0x43, 0x02, 0xcb, 0xab, 0x22, 0x3d, 0x7d, 0xdd, 0x25, 0x2f, 0x91, 0x50, 0x41, 0x36, 0xaa, 0xe9,
-	0x7d, 0xfd, 0x78, 0x38, 0x32, 0x2c, 0xb0, 0x5c, 0xcd, 0xed, 0x1f, 0xa5, 0x5b, 0x92, 0x75, 0x35,
-	0x58, 0xcd, 0x56, 0x17, 0xf2, 0x2f, 0x9a, 0x6c, 0xd7, 0xa8, 0xb7, 0xc6, 0x1a, 0xc7, 0x52, 0x81,
-	0x65, 0xb6, 0xd8, 0x0b, 0xa5, 0xb7, 0x64, 0xed, 0x3a, 0x08, 0x4e, 0xb3, 0x4c, 0x60, 0xb9, 0x99,
-	0xfb, 0x99, 0x4d, 0xdf, 0x2d, 0x58, 0x7d, 0x64, 0x6b, 0x81, 0x25, 0x5a, 0xbe, 0x23, 0x2a, 0xd8,
-	0x69, 0xe0, 0xe8, 0x3c, 0x70, 0xf4, 0x3d, 0x70, 0xf4, 0x3e, 0xf2, 0xe4, 0x3c, 0xf2, 0xe4, 0x73,
-	0xe4, 0xc9, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x8e, 0x18, 0xeb, 0x76, 0x31, 0x01, 0x00, 0x00,
+	// 245 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x44, 0xcf, 0xb1, 0x6a, 0xf3, 0x30,
+	0x14, 0x05, 0x60, 0xdf, 0x3f, 0xb1, 0xc9, 0x2f, 0xda, 0x45, 0x84, 0x22, 0x32, 0x08, 0xd3, 0xa1,
+	0x68, 0x89, 0x3d, 0x74, 0xec, 0xd4, 0x50, 0xe8, 0x5a, 0x34, 0x76, 0x8b, 0x5c, 0x59, 0x36, 0xd4,
+	0xba, 0xc6, 0x92, 0x86, 0xbc, 0x45, 0xdf, 0xa0, 0xaf, 0xd3, 0x31, 0x63, 0xc7, 0x62, 0xbf, 0x48,
+	0xb1, 0x52, 0x92, 0xed, 0x7e, 0x70, 0xce, 0x85, 0x43, 0xd6, 0xce, 0x0f, 0xa1, 0xf2, 0x6f, 0xba,
+	0xde, 0x1a, 0x34, 0x58, 0xf4, 0x03, 0x7a, 0xa4, 0xc4, 0xa0, 0xd3, 0x83, 0xd2, 0xb6, 0x6a, 0x36,
+	0x5b, 0xd3, 0xfa, 0x26, 0xa8, 0xa2, 0xc2, 0xae, 0x9c, 0x23, 0x65, 0x8c, 0xa8, 0x50, 0x47, 0x45,
+	0x94, 0x97, 0xea, 0xed, 0x27, 0x90, 0xeb, 0x67, 0x34, 0xf8, 0x32, 0x6b, 0x17, 0xea, 0x47, 0x4a,
+	0xc9, 0xd2, 0xee, 0x3b, 0xcd, 0x20, 0x07, 0xf1, 0x5f, 0xc6, 0x9b, 0x6e, 0xc8, 0x4a, 0xb5, 0x83,
+	0x6f, 0x9e, 0xf6, 0x07, 0xf6, 0x2f, 0x07, 0xb1, 0x90, 0x67, 0xd3, 0x35, 0x49, 0xfb, 0x06, 0xad,
+	0x66, 0x8b, 0x58, 0x38, 0x61, 0x6e, 0xb8, 0x56, 0xbd, 0xb7, 0xd6, 0x38, 0xb6, 0xcc, 0x41, 0xa4,
+	0xf2, 0x6c, 0x7a, 0x43, 0x32, 0xd7, 0x63, 0x70, 0x9a, 0xa5, 0x39, 0x88, 0x95, 0xfc, 0xd3, 0xfc,
+	0xa9, 0x43, 0xab, 0x0f, 0x2c, 0xcb, 0x41, 0x80, 0x3c, 0x61, 0x77, 0xf7, 0x35, 0x72, 0x38, 0x8e,
+	0x1c, 0x7e, 0x46, 0x0e, 0x1f, 0x13, 0x4f, 0x8e, 0x13, 0x4f, 0xbe, 0x27, 0x9e, 0xbc, 0x5e, 0x15,
+	0x0f, 0x97, 0xe1, 0x2a, 0x8b, 0x83, 0xee, 0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x0d, 0x7f, 0x53,
+	0x84, 0x23, 0x01, 0x00, 0x00,
 }
 
 func (m *GogoProtoBufA) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -144,47 +145,68 @@ func (m *GogoProtoBufA) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *GogoProtoBufA) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GogoProtoBufA) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintStructdefGogo(dAtA, i, uint64(len(m.Name)))
-	i += copy(dAtA[i:], m.Name)
-	dAtA[i] = 0x10
-	i++
-	i = encodeVarintStructdefGogo(dAtA, i, uint64(m.BirthDay))
-	dAtA[i] = 0x1a
-	i++
-	i = encodeVarintStructdefGogo(dAtA, i, uint64(len(m.Phone)))
-	i += copy(dAtA[i:], m.Phone)
-	dAtA[i] = 0x20
-	i++
-	i = encodeVarintStructdefGogo(dAtA, i, uint64(m.Siblings))
-	dAtA[i] = 0x28
-	i++
-	if m.Spouse {
-		dAtA[i] = 1
-	} else {
-		dAtA[i] = 0
+	if m.Money != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Money))))
+		i--
+		dAtA[i] = 0x31
 	}
-	i++
-	dAtA[i] = 0x31
-	i++
-	encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Money))))
-	i += 8
-	return i, nil
+	if m.Spouse {
+		i--
+		if m.Spouse {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.Siblings != 0 {
+		i = encodeVarintStructdefGogo(dAtA, i, uint64(m.Siblings))
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.Phone) > 0 {
+		i -= len(m.Phone)
+		copy(dAtA[i:], m.Phone)
+		i = encodeVarintStructdefGogo(dAtA, i, uint64(len(m.Phone)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.BirthDay != 0 {
+		i = encodeVarintStructdefGogo(dAtA, i, uint64(m.BirthDay))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintStructdefGogo(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintStructdefGogo(dAtA []byte, offset int, v uint64) int {
+	offset -= sovStructdefGogo(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *GogoProtoBufA) Size() (n int) {
 	if m == nil {
@@ -193,31 +215,35 @@ func (m *GogoProtoBufA) Size() (n int) {
 	var l int
 	_ = l
 	l = len(m.Name)
-	n += 1 + l + sovStructdefGogo(uint64(l))
-	n += 1 + sovStructdefGogo(uint64(m.BirthDay))
+	if l > 0 {
+		n += 1 + l + sovStructdefGogo(uint64(l))
+	}
+	if m.BirthDay != 0 {
+		n += 1 + sovStructdefGogo(uint64(m.BirthDay))
+	}
 	l = len(m.Phone)
-	n += 1 + l + sovStructdefGogo(uint64(l))
-	n += 1 + sovStructdefGogo(uint64(m.Siblings))
-	n += 2
-	n += 9
+	if l > 0 {
+		n += 1 + l + sovStructdefGogo(uint64(l))
+	}
+	if m.Siblings != 0 {
+		n += 1 + sovStructdefGogo(uint64(m.Siblings))
+	}
+	if m.Spouse {
+		n += 2
+	}
+	if m.Money != 0 {
+		n += 9
+	}
 	return n
 }
 
 func sovStructdefGogo(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozStructdefGogo(x uint64) (n int) {
 	return sovStructdefGogo(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
 func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
-	var hasFields [1]uint64
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -278,7 +304,6 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 			}
 			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-			hasFields[0] |= uint64(0x00000001)
 		case 2:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BirthDay", wireType)
@@ -298,7 +323,6 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-			hasFields[0] |= uint64(0x00000002)
 		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Phone", wireType)
@@ -331,7 +355,6 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 			}
 			m.Phone = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-			hasFields[0] |= uint64(0x00000004)
 		case 4:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Siblings", wireType)
@@ -351,7 +374,6 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-			hasFields[0] |= uint64(0x00000008)
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Spouse", wireType)
@@ -372,7 +394,6 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.Spouse = bool(v != 0)
-			hasFields[0] |= uint64(0x00000010)
 		case 6:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Money", wireType)
@@ -384,7 +405,6 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
 			iNdEx += 8
 			m.Money = float64(math.Float64frombits(v))
-			hasFields[0] |= uint64(0x00000020)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStructdefGogo(dAtA[iNdEx:])
@@ -403,24 +423,6 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 			iNdEx += skippy
 		}
 	}
-	if hasFields[0]&uint64(0x00000001) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("name")
-	}
-	if hasFields[0]&uint64(0x00000002) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("birthDay")
-	}
-	if hasFields[0]&uint64(0x00000004) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("phone")
-	}
-	if hasFields[0]&uint64(0x00000008) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("siblings")
-	}
-	if hasFields[0]&uint64(0x00000010) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("spouse")
-	}
-	if hasFields[0]&uint64(0x00000020) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("money")
-	}
 
 	if iNdEx > l {
 		return io.ErrUnexpectedEOF
@@ -430,6 +432,7 @@ func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 func skipStructdefGogo(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -461,10 +464,8 @@ func skipStructdefGogo(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -485,55 +486,30 @@ func skipStructdefGogo(dAtA []byte) (n int, err error) {
 				return 0, ErrInvalidLengthStructdefGogo
 			}
 			iNdEx += length
-			if iNdEx < 0 {
-				return 0, ErrInvalidLengthStructdefGogo
-			}
-			return iNdEx, nil
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowStructdefGogo
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipStructdefGogo(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-				if iNdEx < 0 {
-					return 0, ErrInvalidLengthStructdefGogo
-				}
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupStructdefGogo
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthStructdefGogo
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthStructdefGogo = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowStructdefGogo   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthStructdefGogo        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowStructdefGogo          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupStructdefGogo = fmt.Errorf("proto: unexpected end of group")
 )

@@ -1,16 +1,20 @@
+syntax = "proto3";
+
 package goserbench;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option go_package = ".;goserbench";
 
 option (gogoproto.unmarshaler_all) = true;
 option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 
 message GogoProtoBufA {
-  required string name = 1 [(gogoproto.nullable) = false];
-  required int64 birthDay = 2 [(gogoproto.nullable) = false];
-  required string phone = 3 [(gogoproto.nullable) = false];
-  required int32 siblings = 4 [(gogoproto.nullable) = false];
-  required bool spouse = 5 [(gogoproto.nullable) = false];
-  required double money = 6 [(gogoproto.nullable) = false];
+  string name = 1;
+  int64 birthDay = 2;
+  string phone = 3;
+  int32 siblings = 4;
+  bool spouse = 5;
+  double money = 6;
 }
