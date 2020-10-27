@@ -28,7 +28,7 @@ func easyjsonB0f55b16DecodeGithubComAlecthomasGoSerializationBenchmarks(in *jlex
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -139,7 +139,7 @@ func easyjsonB0f55b16DecodeGithubComAlecthomasGoSerializationBenchmarks1(in *jle
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -240,7 +240,7 @@ func easyjsonB0f55b16DecodeGithubComAlecthomasGoSerializationBenchmarks2(in *jle
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
