@@ -26,6 +26,9 @@ structdef-gogo.pb.go: structdef-gogo.proto
 structdef.pb.go: structdef.proto
 	protoc --go_out=. structdef.proto
 
+structdef.v2.pb.go: structdef.v2.proto
+	protoc --go-v1.25.0_out=. structdef.v2.proto
+
 structdef.capnp2.go: structdef.capnp2
 	go get -u zombiezen.com/go/capnproto2/... # conflicts with go-capnproto
 	capnp compile -I${GOPATH}/src -ogo structdef.capnp2

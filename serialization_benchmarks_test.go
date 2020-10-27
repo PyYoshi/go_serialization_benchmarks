@@ -31,6 +31,7 @@ import (
 	"github.com/ugorji/go/codec"
 	vmihailenco "github.com/vmihailenco/msgpack/v4"
 	"go.dedis.ch/protobuf"
+	protov2 "google.golang.org/protobuf/proto"
 	"gopkg.in/mgo.v2/bson"
 	capnp "zombiezen.com/go/capnproto2"
 )
@@ -863,6 +864,73 @@ func BenchmarkGoprotobufUnmarshal(b *testing.B) {
 		n := rand.Intn(len(ser))
 		o := &ProtoBufA{}
 		err := proto.Unmarshal(ser[n], o)
+		if err != nil {
+			b.Fatalf("goprotobuf failed to unmarshal: %s (%s)", err, ser[n])
+		}
+		// Validate unmarshalled data.
+		if validate != "" {
+			i := data[n]
+			correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+			if !correct {
+				b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
+			}
+		}
+	}
+}
+
+// google.golang.org/protobuf
+
+func generateProtoV2() []*ProtoBufV2A {
+	a := make([]*ProtoBufV2A, 0, 1000)
+	for i := 0; i < 1000; i++ {
+		a = append(a, &ProtoBufV2A{
+			Name:     randString(16),
+			BirthDay: time.Now().UnixNano(),
+			Phone:    randString(10),
+			Siblings: rand.Int31n(5),
+			Spouse:   rand.Intn(2) == 1,
+			Money:    rand.Float64(),
+		})
+	}
+	return a
+}
+
+func BenchmarkGoprotobufV2Marshal(b *testing.B) {
+	data := generateProtoV2()
+	b.ReportAllocs()
+	b.ResetTimer()
+	var serialSize int
+	for i := 0; i < b.N; i++ {
+		bytes, err := protov2.Marshal(data[rand.Intn(len(data))])
+		if err != nil {
+			b.Fatal(err)
+		}
+		serialSize += len(bytes)
+	}
+	b.ReportMetric(float64(serialSize)/float64(b.N), "B/serial")
+}
+
+func BenchmarkGoprotobufV2Unmarshal(b *testing.B) {
+	b.StopTimer()
+	data := generateProtoV2()
+	ser := make([][]byte, len(data))
+	var serialSize int
+	for i, d := range data {
+		var err error
+		ser[i], err = protov2.Marshal(d)
+		if err != nil {
+			b.Fatal(err)
+		}
+		serialSize += len(ser[i])
+	}
+	b.ReportMetric(float64(serialSize)/float64(len(data)), "B/serial")
+	b.ReportAllocs()
+	b.StartTimer()
+
+	for i := 0; i < b.N; i++ {
+		n := rand.Intn(len(ser))
+		o := &ProtoBufV2A{}
+		err := protov2.Unmarshal(ser[n], o)
 		if err != nil {
 			b.Fatalf("goprotobuf failed to unmarshal: %s (%s)", err, ser[n])
 		}

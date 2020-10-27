@@ -50,8 +50,8 @@ require (
 	github.com/vmihailenco/msgpack/v4 v4.3.12
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	go.dedis.ch/protobuf v1.0.11
-	golang.org/x/net v0.0.0-20201026091529-146b70c837a4 // indirect
-	golang.org/x/sys v0.0.0-20201027130517-9d1ec526b7bf // indirect
+	golang.org/x/net v0.0.0-20201027133719-8eef5233e2a1 // indirect
+	golang.org/x/sys v0.0.0-20201027140754-0fcbb8f4928c // indirect
 	golang.org/x/tools v0.0.0-20201009162240-fcf82128ed91 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.25.0
